@@ -1,0 +1,60 @@
+# ===========================================================================
+# Euler Equations on a Periodic Box -- Taylor-Green Vortex (regression test)
+# ===========================================================================
+# Compressible Euler (inviscid, no gravity) on a triply-periodic domain.
+# Single level, fixed dt, no acoustic sub-stepping.
+# ===========================================================================
+
+erf.prob_name = "Taylor-Green Vortex"
+
+erf.init_type = Uniform
+
+max_step = 10
+
+amrex.fpe_trap_invalid = 1
+fabarray.mfiter_tile_size = 1024 1024 1024
+
+# PROBLEM SIZE & GEOMETRY
+geometry.prob_extent = 6.283185307179586  6.283185307179586  6.283185307179586
+amr.n_cell           = 32 32 32
+
+geometry.is_periodic = 1 1 1
+
+# SINGLE LEVEL
+amr.max_level = 0
+
+# TIME STEP CONTROL
+erf.substepping_type = None
+erf.fixed_dt         = 0.05
+
+# ADVECTION SCHEME
+erf.dycore_horiz_adv_type    = "Centered_2nd"
+erf.dycore_vert_adv_type     = "Centered_2nd"
+erf.dryscal_horiz_adv_type   = "Centered_2nd"
+erf.dryscal_vert_adv_type    = "Centered_2nd"
+
+# PHYSICS
+erf.use_gravity     = false
+erf.les_type        = "None"
+erf.molec_diff_type = "None"
+erf.alpha_T         = 0.0
+erf.alpha_C         = 0.0
+
+# DIAGNOSTICS
+erf.sum_interval = 1
+erf.v            = 1
+amr.v            = 1
+
+# CHECKPOINT
+erf.check_file = chk
+erf.check_int  = -1
+
+# PLOTFILES
+erf.plot_file_1 = plt
+erf.plot_int_1  = 10
+erf.plot_vars_1 = density x_velocity y_velocity z_velocity pressure theta temp scalar
+
+# PROBLEM PARAMETERS
+prob.rho_0 = 1.0
+prob.A_0   = 1.0
+prob.V_0   = 1.0

@@ -1,0 +1,92 @@
+# ===========================================================================
+# Euler Equations on a Periodic Box -- Taylor-Green Vortex
+# ===========================================================================
+#
+# Purpose:
+#   Compressible Euler equations (inviscid, no gravity) on a triply-periodic
+#   domain using the Taylor-Green vortex initial condition.
+#   Designed for code-comparison / verification studies.
+#
+# Key settings:
+#   a) Single level grid (no AMR)             -- amr.max_level = 0
+#   b) Fixed time step (no acoustic sub-step) -- erf.substepping_type = None
+#   c) Advection scheme explicitly set        -- Centered_2nd everywhere
+#
+# Reference:
+#   "Time-reversibility of the Euler equations as a benchmark for
+#    energy conserving schemes", JCP 2008
+#   NASA Ames: https://www1.grc.nasa.gov/wp-content/uploads/C3.3_Ames.pdf
+# ===========================================================================
+
+erf.prob_name = "Taylor-Green Vortex"
+
+erf.init_type = Uniform
+
+max_step  = 200
+stop_time = 10.0
+
+amrex.fpe_trap_invalid = 1
+fabarray.mfiter_tile_size = 1024 1024 1024
+
+# ---------------------------------------------------------------------------
+# PROBLEM SIZE & GEOMETRY  (triply-periodic cube [0, 2*pi]^3)
+# ---------------------------------------------------------------------------
+geometry.prob_extent = 6.283185307179586  6.283185307179586  6.283185307179586
+amr.n_cell           = 64 64 64
+
+geometry.is_periodic = 1 1 1      # fully periodic in x, y, z
+
+# ---------------------------------------------------------------------------
+# SINGLE LEVEL (no AMR)
+# ---------------------------------------------------------------------------
+amr.max_level = 0
+
+# ---------------------------------------------------------------------------
+# TIME STEP CONTROL -- fixed dt, NO acoustic sub-stepping
+# ---------------------------------------------------------------------------
+erf.substepping_type = None
+erf.fixed_dt         = 0.05
+
+# ---------------------------------------------------------------------------
+# ADVECTION SCHEME  (change these to compare schemes)
+# ---------------------------------------------------------------------------
+erf.dycore_horiz_adv_type    = "Centered_2nd"
+erf.dycore_vert_adv_type     = "Centered_2nd"
+erf.dryscal_horiz_adv_type   = "Centered_2nd"
+erf.dryscal_vert_adv_type    = "Centered_2nd"
+
+# ---------------------------------------------------------------------------
+# PHYSICS -- pure Euler (inviscid, no gravity, no LES, no diffusion)
+# ---------------------------------------------------------------------------
+erf.use_gravity     = false
+erf.les_type        = "None"
+erf.molec_diff_type = "None"
+erf.alpha_T         = 0.0
+erf.alpha_C         = 0.0
+
+# ---------------------------------------------------------------------------
+# DIAGNOSTICS & VERBOSITY
+# ---------------------------------------------------------------------------
+erf.sum_interval = 1
+erf.v            = 1
+amr.v            = 1
+
+# ---------------------------------------------------------------------------
+# CHECKPOINT FILES
+# ---------------------------------------------------------------------------
+erf.check_file = chk
+erf.check_int  = -1     # disabled
+
+# ---------------------------------------------------------------------------
+# PLOTFILES
+# ---------------------------------------------------------------------------
+erf.plot_file_1 = plt
+erf.plot_int_1  = 10
+erf.plot_vars_1 = density x_velocity y_velocity z_velocity pressure theta temp scalar
+
+# ---------------------------------------------------------------------------
+# PROBLEM PARAMETERS (Taylor-Green Vortex)
+# ---------------------------------------------------------------------------
+prob.rho_0 = 1.0   # reference density
+prob.A_0   = 1.0   # pressure amplitude
+prob.V_0   = 1.0   # velocity amplitude

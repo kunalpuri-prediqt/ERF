@@ -1,0 +1,89 @@
+Euler Equations on a Triply-Periodic Box
+========================================
+
+This directory contains input files for solving the compressible Euler equations
+on a periodic box using ERF/AMReX, configured for code-comparison studies.
+
+All cases satisfy:
+  a) Single level grid -- no AMR  (amr.max_level = 0)
+  b) Fixed time step -- no acoustic sub-stepping  (erf.substepping_type = None)
+  c) Explicit control over advection scheme
+
+Input Files
+-----------
+  inputs_euler_centered2nd        Taylor-Green vortex, Centered_2nd advection
+  inputs_euler_upwind5th          Taylor-Green vortex, Upwind_5th advection
+  inputs_euler_weno5              Taylor-Green vortex, WENO5 advection
+  inputs_euler_isentropic_vortex  Advecting isentropic vortex, Upwind_5th
+
+Running
+-------
+  Build the DryRegTests executable, then:
+
+    ./erf_dryregtests inputs_euler_centered2nd
+
+  or with MPI:
+
+    mpirun -np 4 ./erf_dryregtests inputs_euler_centered2nd
+
+Advection Scheme Options
+------------------------
+  Change these in the inputs file (set independently for momentum and scalars):
+
+    erf.dycore_horiz_adv_type    = "<scheme>"
+    erf.dycore_vert_adv_type     = "<scheme>"
+    erf.dryscal_horiz_adv_type   = "<scheme>"
+    erf.dryscal_vert_adv_type    = "<scheme>"
+
+  Available schemes:
+    Centered_2nd    -- 2nd-order centered (no dissipation)
+    Upwind_3rd      -- 3rd-order upwind
+    Blended_3rd4th  -- blend of 3rd-order upwind + 4th-order centered
+    Centered_4th    -- 4th-order centered
+    Upwind_5th      -- 5th-order upwind
+    Blended_5th6th  -- blend of 5th-order upwind + 6th-order centered
+    Centered_6th    -- 6th-order centered
+    WENO3           -- 3rd-order WENO
+    WENOZ3          -- 3rd-order WENO-Z
+    WENO5           -- 5th-order WENO
+    WENOZ5          -- 5th-order WENO-Z
+    WENO7           -- 7th-order WENO
+    WENOZ7          -- 7th-order WENO-Z
+
+  For blended schemes, control the upwinding fraction (0 = pure central, 1 = pure upwind):
+    erf.dycore_horiz_upw_frac  = 0.5
+    erf.dryscal_horiz_upw_frac = 0.5
+
+Resolution / Convergence Study
+------------------------------
+  To run a grid-convergence study, vary amr.n_cell while scaling fixed_dt:
+
+    amr.n_cell = 32 32 32    erf.fixed_dt = 0.10
+    amr.n_cell = 64 64 64    erf.fixed_dt = 0.05
+    amr.n_cell = 128 128 128 erf.fixed_dt = 0.025
+    amr.n_cell = 256 256 256 erf.fixed_dt = 0.0125
+
+Taylor-Green Vortex Initial Condition
+-------------------------------------
+  u = V_0 * sin(x) * cos(y) * cos(z)
+  v = -V_0 * cos(x) * sin(y) * cos(z)
+  w = 0
+  p = rho_0 * V_0^2 * [1/(gamma*M^2) + (cos(2x)+cos(2y))*(cos(2z)+2)/16]
+
+  Domain: [0, 2*pi]^3,  periodic in all directions.
+
+Isentropic Vortex Initial Condition
+------------------------------------
+  Gaussian vortex superimposed on a uniform freestream at Mach = M_inf
+  at angle alpha. Has an exact solution (vortex translates without
+  distortion), so the L2 error at any time can be computed.
+
+  Domain: [-12, 12]^2 x [-1, 1],  periodic in all directions.
+
+References
+----------
+  [1] "Time-reversibility of the Euler equations as a benchmark for
+       energy conserving schemes", JCP 2008
+  [2] NASA Taylor-Green benchmark: https://www1.grc.nasa.gov/wp-content/uploads/C3.3_Ames.pdf
+  [3] Yee, Vinokur, Djomehri, "Entropy splitting and numerical dissipation",
+      JCP 162 (2000), pp. 33-81

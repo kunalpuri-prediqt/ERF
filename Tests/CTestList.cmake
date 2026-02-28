@@ -175,6 +175,7 @@ add_test_r(ScalarDiffusionGaussian           "DryRegTests"  "erf_dryregtests" "p
 add_test_r(ScalarDiffusionSine               "DryRegTests"  "erf_dryregtests" "plt00020")
 add_test_r(TaylorGreenAdvecting              "DryRegTests"  "erf_dryregtests" "plt00010")
 add_test_r(TaylorGreenAdvectingDiffusing     "DryRegTests"  "erf_dryregtests" "plt00010")
+add_test_r(EulerPeriodicBox                  "DryRegTests"  "erf_dryregtests" "plt00010")
 add_test_r(MSF_NoSub_IsentropicVortexAdv     "DryRegTests"  "erf_dryregtests" "plt00010")
 add_test_r(MSF_Sub_IsentropicVortexAdv       "DryRegTests"  "erf_dryregtests" "plt00010")
 #add_test_r(FlowInABox                       "DevTests/FlowInABox"           "erf_flow_in_a_box" "plt00010")
