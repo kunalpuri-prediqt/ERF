@@ -1364,7 +1364,7 @@ private:
                  (sc.advChoice.dycore_horiz_adv_type    == AdvType::Centered_6th)
               || (sc.advChoice.dycore_vert_adv_type     == AdvType::Centered_6th)
               || (sc.advChoice.moistscal_horiz_adv_type == AdvType::Centered_6th)
-              || (sc.advChoice.moistscal_horiz_adv_type == AdvType::Centered_6th)
+              || (sc.advChoice.moistscal_vert_adv_type  == AdvType::Centered_6th)
               || (sc.advChoice.dryscal_horiz_adv_type   == AdvType::Centered_6th)
               || (sc.advChoice.dryscal_vert_adv_type    == AdvType::Centered_6th) )
             { ngrow = 3; }
@@ -1372,7 +1372,7 @@ private:
                  (sc.advChoice.dycore_horiz_adv_type    == AdvType::Upwind_5th)
               || (sc.advChoice.dycore_vert_adv_type     == AdvType::Upwind_5th)
               || (sc.advChoice.moistscal_horiz_adv_type == AdvType::Upwind_5th)
-              || (sc.advChoice.moistscal_horiz_adv_type == AdvType::Upwind_5th)
+              || (sc.advChoice.moistscal_vert_adv_type  == AdvType::Upwind_5th)
               || (sc.advChoice.dryscal_horiz_adv_type   == AdvType::Upwind_5th)
               || (sc.advChoice.dryscal_vert_adv_type    == AdvType::Upwind_5th) )
             { ngrow = 3; }
